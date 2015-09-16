@@ -31,15 +31,18 @@ class ZabbixApi:
 		self.proxylist = []
 		self.grouplist = []
 	
-	def auth(self):
-		auth_data={ 'jsonrpc':'2.0','method':'user.login','params':{'user':self.api_user,'password':self.api_pass},'id':0}
-		request = urllib2.Request(self.zabbix_url,json.dumps(auth_data))
+	def senddata(self,data):
+		request = urllib2.Request(self.zabbix_url,json.dumps(data))
 		request.add_header('Content-Type','application/json')
 		response = urllib2.urlopen(request)
-		var1 = json.loads(response.read())
-		self.auth =  var1['result']
-		print self.auth
+		return json.loads(response.read())	
 		self.id += 1
+	
+	def auth(self):
+		auth_data={ 'jsonrpc':'2.0','method':'user.login','params':{'user':self.api_user,'password':self.api_pass},'id':0}
+		ret = self.senddata(auth_data)
+		self.auth =  ret['result']
+		print self.auth
 
 	def getproxy(self):
 ##json data
@@ -53,21 +56,20 @@ class ZabbixApi:
     "auth": self.auth,
     "id": self.id}
 ## end data
-		request = urllib2.Request(self.zabbix_url,json.dumps( data ))		
-		request.add_header('Content-Type','application/json')
-		response = urllib2.urlopen(request)
-		var1 = json.loads(response.read())
-	#	print var1['result']
-		for p in var1['result']:
+		ret = self.senddata(data)
+	#	print ret['result']
+		for p in ret['result']:
 			theid = p['proxyid']
 			thehost = p['host']
 			thestatus =  p['status']
 			n1 = Proxy( theid,thehost,thestatus )
 			self.proxylist.append(n1)
-		self.id += 1
+
 	def printproxy(self):
 		for i in self.proxylist:
 			i.say()
+
+
 	def getgroup(self):
 		data = {
     "jsonrpc": "2.0",
@@ -77,18 +79,14 @@ class ZabbixApi:
     },
     "auth": self.auth,
     "id": self.id }
-		request = urllib2.Request(self.zabbix_url,json.dumps( data ))
-		request.add_header('Content-Type','application/json')
-		response = urllib2.urlopen(request)
-		var1 = json.loads(response.read())
-		for p in var1['result']:
+		ret = self.senddata(data)
+		for p in ret['result']:
 			groupid = p['groupid']
 			name = p['name']
 			n1 = Group(groupid,name)
 		# for debug
 			n1.say()
 			self.grouplist.append( n1 )
-		self.id += 1
 		
 
 if __name__ == '__main__':
