@@ -12,6 +12,13 @@ class Proxy:
 		self.status = status
 	def say(self):
 		print '%s %s %s' % (self.proxyid ,self.host ,self.status)
+
+class Group:
+	def __init__(self,groupid ,name):
+		self.groupid = groupid
+		self.name = name
+	def say(self):
+		print '%s %s' %( self.groupid,self.name)
 		
 
 
@@ -22,6 +29,7 @@ class ZabbixApi:
 		self.api_pass = api_pass
 		self.id = 0
 		self.proxylist = []
+		self.grouplist = []
 	
 	def auth(self):
 		auth_data={ 'jsonrpc':'2.0','method':'user.login','params':{'user':self.api_user,'password':self.api_pass},'id':0}
@@ -60,6 +68,27 @@ class ZabbixApi:
 	def printproxy(self):
 		for i in self.proxylist:
 			i.say()
+	def getgroup(self):
+		data = {
+    "jsonrpc": "2.0",
+    "method": "hostgroup.get",
+    "params": {
+        "output": "extend",
+    },
+    "auth": self.auth,
+    "id": self.id }
+		request = urllib2.Request(self.zabbix_url,json.dumps( data ))
+		request.add_header('Content-Type','application/json')
+		response = urllib2.urlopen(request)
+		var1 = json.loads(response.read())
+		for p in var1['result']:
+			groupid = p['groupid']
+			name = p['name']
+			n1 = Group(groupid,name)
+		# for debug
+			n1.say()
+			self.grouplist.append( n1 )
+		self.id += 1
 		
 
 if __name__ == '__main__':
@@ -70,4 +99,5 @@ if __name__ == '__main__':
 	test.auth()
 	test.getproxy()
 	test.printproxy()
+	test.getgroup()
 
