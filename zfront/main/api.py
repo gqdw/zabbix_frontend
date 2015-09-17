@@ -154,7 +154,7 @@ if __name__ == '__main__':
 	test = ZabbixApi(api_user,api_pass)
 	test.auth()
 	#def createhost(self,hostname,hostip,groupid,templateid):
-	test.createhost('acatest','10.0.0.126','29', '10429')
+	#test.createhost('acatest','10.0.0.126','29', '10429')
 #	test.getproxy()
 #	test.printproxy()
 	test.getgroup()

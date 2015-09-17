@@ -13,6 +13,10 @@
 </table> -->
 	<form action="" method="post">
 		{{ form }}
+		
 		<input type="submit" value="Submit" />
 	</form>
+		{% for g in grouplist %}
+		{{ g.groupid }} -> {{  g.name }}
+		{% endfor %}
 </html>
