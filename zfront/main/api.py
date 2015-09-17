@@ -4,6 +4,12 @@
 import urllib2
 import json
 import sys
+class Template:
+	def __init__(self,templateid,name):
+		self.templateid = templateid
+		self.name = name
+	def say(self):
+		print '%s %s' %(self.templateid ,self.name)
 
 class Proxy:
 	def __init__(self,proxyid,host,status):
@@ -30,6 +36,7 @@ class ZabbixApi:
 		self.id = 0
 		self.proxylist = []
 		self.grouplist = []
+		self.templatelist = []
 	
 	def senddata(self,data):
 		request = urllib2.Request(self.zabbix_url,json.dumps(data))
@@ -68,7 +75,58 @@ class ZabbixApi:
 	def printproxy(self):
 		for i in self.proxylist:
 			i.say()
-
+#todo 
+#port 10050
+	def gettemplates(self):
+		data = {
+    "jsonrpc": "2.0",
+    "method": "template.get",
+    "params": { "output": "extend" },
+    "auth": self.auth,
+    "id": self.id
+	}
+		ret = self.senddata(data)
+		for t in ret['result']:
+			n1 = Template( t['templateid'] ,t['name'])
+		# for debug
+			n1.say()
+			self.templatelist.append(n1)
+		
+	def createhost(self,hostname,hostip,groupid,templateid):
+		data ={
+    "jsonrpc": "2.0",
+    "method": "host.create",
+    "params": {
+        "host": hostname,
+        "interfaces": [
+            {
+                "type": 1,
+                "main": 1,
+                "useip": 1,
+                "ip": hostip,
+                "dns": "",
+                "port": "10050"
+            }
+        ],
+        "groups": [
+            {
+                "groupid": groupid
+            }
+        ],
+        "templates": [
+            {
+                "templateid": templateid
+            }
+        ],
+        "inventory": {
+        }
+    },
+    "auth": self.auth,
+    "id": self.id
+	}
+		ret = self.senddata(data)
+		print ret
+		
 
 	def getgroup(self):
 		data = {
@@ -95,7 +153,10 @@ if __name__ == '__main__':
 		api_pass = f.readline().strip()
 	test = ZabbixApi(api_user,api_pass)
 	test.auth()
-	test.getproxy()
-	test.printproxy()
+	#def createhost(self,hostname,hostip,groupid,templateid):
+	test.createhost('acatest','10.0.0.126','29', '10429')
+#	test.getproxy()
+#	test.printproxy()
 	test.getgroup()
+	test.gettemplates()
 
