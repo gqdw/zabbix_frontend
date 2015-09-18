@@ -22,7 +22,11 @@
 		
 		<input type="submit" value="Submit" />
 	</form>
-		{% for g in grouplist %}
-		{{ g.groupid }} -> {{  g.name }}
-		{% endfor %}
+	{% if isok  %}
+	<p>添加主机成功</p>
+	{% endif %}
+
+	{% if isfalse %}
+	<p>添加主机失败</p>
+	{% endif %} 
 </html>

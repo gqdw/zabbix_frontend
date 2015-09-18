@@ -41,7 +41,13 @@ def index( request ):
 			Z = ZabbixApi(api_user,api_pass)
 			Z.auth()
 			ret = Z.createhost(cd['host'],cd['ip'],cd['group'],cd['template'])
-			return  render(request,'ok.html',{})
+			print ret
+			if ret.has_key('error'):
+				isok = 0
+			else:
+				isfalse = 1
+			return  render(request,'index.html',{'form':form,'isok':isok,'isfalse':isfalse})
+				#return  render(request,'ok.html',{})
 			#return HttpResponse(ret['result'])
 	else:
 		form = Addbox()

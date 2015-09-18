@@ -126,6 +126,7 @@ class ZabbixApi:
 	}
 		ret = self.senddata(data)
 		print ret
+		return ret
 		
 
 	def getgroup(self):
