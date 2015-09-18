@@ -26,6 +26,13 @@ class Addbox(forms.Form):
 	group = forms.ChoiceField(choices = CH_GROUP)
 
 def index( request ):
-	f = Addbox()
-	return render(request ,'index.html',{'form':f})
+	if request.method == 'POST':
+		form = Addbox( request.POST )
+		if form.is_valid():
+			cd = form.cleaned_data
+			print cd['host'],cd['ip'],cd['template'],cd['group']
+			return HttpResponse('ok')
+	else:
+		form = Addbox()
+	return render(request ,'index.html',{'form':form})
 #	return HttpResponse('ok')

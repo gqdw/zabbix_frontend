@@ -11,7 +11,13 @@
 		<label for="id_ip">Ip:</label> <input id="id_ip" name="ip" type="text" />
 	</li> 
 </table> -->
+ 	{% if form.errors %}
+        <p style="color: red;">
+            Please correct the error{{ form.errors|pluralize }} below.
+        </p>
+    {% endif %}
 	<form action="" method="post">
+		{% csrf_token %}
 		{{ form }}
 		
 		<input type="submit" value="Submit" />
