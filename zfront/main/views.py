@@ -4,8 +4,14 @@ from django import forms
 from api import ZabbixApi
 
 # Create your views here.
+def getpass():
+	with open('.config') as f:
+		api_user = f.readline().strip()
+		api_pass = f.readline().strip()
+	return (api_user,api_pass)
 class Addbox(forms.Form):
-	Z = ZabbixApi('aca','acajingru123P')
+	(api_user,api_pass) = getpass()
+	Z = ZabbixApi(api_user,api_pass)
 	Z.auth()
 	Z.getgroup()
 	Z.gettemplates()
@@ -22,16 +28,21 @@ class Addbox(forms.Form):
 	CH_TEMPLATE = tuple(tlist)
 	host = forms.CharField(max_length=30)
 	ip = forms.GenericIPAddressField()
-	template = forms.ChoiceField(choices = CH_TEMPLATE)
 	group = forms.ChoiceField(choices = CH_GROUP)
+	template = forms.ChoiceField(choices = CH_TEMPLATE)
 
 def index( request ):
+	(api_user,api_pass) = getpass()
 	if request.method == 'POST':
 		form = Addbox( request.POST )
 		if form.is_valid():
 			cd = form.cleaned_data
 			print cd['host'],cd['ip'],cd['template'],cd['group']
-			return HttpResponse('ok')
+			Z = ZabbixApi(api_user,api_pass)
+			Z.auth()
+			ret = Z.createhost(cd['host'],cd['ip'],cd['group'],cd['template'])
+			return  render(request,'ok.html',{})
+			#return HttpResponse(ret['result'])
 	else:
 		form = Addbox()
 	return render(request ,'index.html',{'form':form})
