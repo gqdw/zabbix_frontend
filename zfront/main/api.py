@@ -3,7 +3,6 @@
 #for zabbix 2.2 
 import urllib2
 import json
-import sys
 class Template:
 	def __init__(self,templateid,name):
 		self.templateid = templateid
