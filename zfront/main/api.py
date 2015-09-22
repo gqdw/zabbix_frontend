@@ -49,7 +49,8 @@ class ZabbixApi:
 		auth_data={ 'jsonrpc':'2.0','method':'user.login','params':{'user':self.api_user,'password':self.api_pass},'id':0}
 		ret = self.senddata(auth_data)
 		self.auth =  ret['result']
-		print self.auth
+		# for debug
+		#print self.auth
 
 	def getproxy(self):
 ##json data
@@ -89,7 +90,7 @@ class ZabbixApi:
 		for t in ret['result']:
 			n1 = Template( t['templateid'] ,t['name'])
 		# for debug
-			n1.say()
+			#n1.say()
 			self.templatelist.append(n1)
 		
 	def createhost(self,hostname,hostip,groupid,templateid):
@@ -142,7 +143,8 @@ class ZabbixApi:
     "id": self.id
 	}
 		ret = self.senddata(data)
-		print ret
+	# for debug
+	#	print ret
 		return ret
 		
 

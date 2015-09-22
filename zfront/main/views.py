@@ -9,6 +9,7 @@ def getpass():
 		api_user = f.readline().strip()
 		api_pass = f.readline().strip()
 	return (api_user,api_pass)
+
 class Addbox(forms.Form):
 	(api_user,api_pass) = getpass()
 	Z = ZabbixApi(api_user,api_pass)
