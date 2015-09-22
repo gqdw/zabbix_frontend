@@ -93,6 +93,23 @@ class ZabbixApi:
 			self.templatelist.append(n1)
 		
 	def createhost(self,hostname,hostip,groupid,templateid):
+		"""create host by zabbix api
+			Args:
+				hostname,hostip,groupid, templateid
+			Returns:
+				the json return by zabbix api
+				for error it has error key
+
+				{
+				    "jsonrpc": "2.0",
+				    "error": {
+				        "code": -32602,
+				        "message": "Invalid params.",
+				        "data": "No groups for host \"Linux server\"."
+				    },
+				    "id": 3
+				}
+		"""
 		data ={
     "jsonrpc": "2.0",
     "method": "host.create",
@@ -144,7 +161,7 @@ class ZabbixApi:
 			name = p['name']
 			n1 = Group(groupid,name)
 		# for debug
-			n1.say()
+		#	n1.say()
 			self.grouplist.append( n1 )
 		
 
