@@ -50,6 +50,19 @@ class ZabbixApi:
 		self.auth =  ret['result']
 		# for debug
 		#print self.auth
+	def getalerts(self):
+		data = {
+		    "jsonrpc": "2.0",
+		    "method": "alert.get",
+		    "params": {
+		        "output": "extend",
+		        "actionids": "31"
+		    },
+		    "auth": self.auth,
+		    "id": self.id
+		}
+		ret = self.senddata(data)
+		print ret
 
 	def getproxy(self):
 ##json data
@@ -176,6 +189,6 @@ if __name__ == '__main__':
 	#test.createhost('acatest','10.0.0.126','29', '10429')
 #	test.getproxy()
 #	test.printproxy()
-	test.getgroup()
-	test.gettemplates()
-
+#	test.getgroup()
+#	test.gettemplates()
+	test.getalerts()
