@@ -57,7 +57,7 @@ class ZabbixApi:
 		    "method": "alert.get",
 		    "params": {
 		        "output": "extend",
-		        "actionids": "31"
+				"mediatypeids": "5",
 		    },
 		    "auth": self.auth,
 		    "id": self.id
