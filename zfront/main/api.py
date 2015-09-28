@@ -3,6 +3,7 @@
 #for zabbix 2.2 
 import urllib2
 import json
+import datetime
 class Template:
 	def __init__(self,templateid,name):
 		self.templateid = templateid
@@ -52,18 +53,28 @@ class ZabbixApi:
 		# for debug
 		#print self.auth
 	def getalerts(self):
+#1443312000	
 		data = {
 		    "jsonrpc": "2.0",
 		    "method": "alert.get",
 		    "params": {
 		        "output": "extend",
 				"mediatypeids": "5",
+				"time_from":"1443312000",
 		    },
 		    "auth": self.auth,
 		    "id": self.id
 		}
 		ret = self.senddata(data)
-		print ret
+###
+### {u'eventid': u'1182709', u'mediatypeid': u'5', u'alerttype': u'0', u'alertid': u'112671', u'clock': u'1443417182', u'error': u'', u'userid': u'42', u'retries': u'0', u'status': u'1', u'actionid': u'25', u'sendto': u'15921891876', u'message': u'Trigger: searchcenter 8480\nTrigger status: PROBLEM\n\nItem values:\n\n1. searchcenter  8480 (xml-app05:net.tcp.listen[8480]): 1', u'esc_step': u'1', u'subject': u'\u3010\u9a7b\u4e91\u76d1\u63a7\u4e2d\u5fc3\u3011PROBLEM: searchcenter 8480:xml-app05'}
+###
+#datetime.fromtimestamp(timestamp)
+		for p in ret['result']:
+			print datetime.datetime.fromtimestamp(float(p['clock'])),p['sendto'],p['subject']
+
+	# for debug
+#		print ret
 
 	def getproxy(self):
 ##json data
