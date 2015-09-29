@@ -27,6 +27,13 @@ class Group:
 	def say(self):
 		print '%s %s' %( self.groupid,self.name)
 		
+class Alerts:
+	def __init__(self,timestamp,sendto,message):
+		self.timestamp =  timestamp
+		self.sendto = sendto
+		self.message = message
+	def __unicode__(self):
+		return self.message
 
 
 class ZabbixApi:
@@ -39,6 +46,7 @@ class ZabbixApi:
 		self.proxylist = []
 		self.grouplist = []
 		self.templatelist = []
+		self.alerts = []
 	
 	def senddata(self,data):
 		request = urllib2.Request(self.zabbix_url,json.dumps(data))
@@ -71,14 +79,18 @@ class ZabbixApi:
 		    "id": self.id
 		}
 		ret = self.senddata(data)
+		for p in ret['result']:
+			a = Alerts(p['clock'],p['sendto'],p['subject'])
+			print p['subject']
+			self.alerts.append(a)
 ###
 ### {u'eventid': u'1182709', u'mediatypeid': u'5', u'alerttype': u'0', u'alertid': u'112671', u'clock': u'1443417182', u'error': u'', u'userid': u'42', u'retries': u'0', u'status': u'1', u'actionid': u'25', u'sendto': u'15921891876', u'message': u'Trigger: searchcenter 8480\nTrigger status: PROBLEM\n\nItem values:\n\n1. searchcenter  8480 (xml-app05:net.tcp.listen[8480]): 1', u'esc_step': u'1', u'subject': u'\u3010\u9a7b\u4e91\u76d1\u63a7\u4e2d\u5fc3\u3011PROBLEM: searchcenter 8480:xml-app05'}
 ###
 #datetime.fromtimestamp(timestamp)
 #		print data
 #		print ret
-		for p in ret['result']:
-			print p['clock'],datetime.datetime.fromtimestamp(float(p['clock'])),p['sendto'],p['subject']
+#		for p in ret['result']:
+#			print p['clock'],datetime.datetime.fromtimestamp(float(p['clock'])),p['sendto'],p['subject']
 
 	# for debug
 #		print ret
