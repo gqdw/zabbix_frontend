@@ -54,3 +54,6 @@ def index( request ):
 		form = Addbox()
 	return render(request ,'index.html',{'form':form})
 #	return HttpResponse('ok')
+
+def alerts(request):
+	return render(request,'alerts.html',{})
