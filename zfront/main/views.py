@@ -56,4 +56,12 @@ def index( request ):
 #	return HttpResponse('ok')
 
 def alerts(request):
-	return render(request,'alerts.html',{})
+	(api_user,api_pass) = getpass()
+	Z = ZabbixApi(api_user,api_pass)
+	Z.auth()
+	Z.getalerts(1443312000)
+	return render(request,'alerts.html',{'alerts':Z.alerts})
+
+
+
+

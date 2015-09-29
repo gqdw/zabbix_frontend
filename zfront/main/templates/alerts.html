@@ -1,7 +1,11 @@
 <html>
 
-<table>
+<!-- <table>
 <td>111111111 </td>
 <td>222222222 </td>
-</table>
+</table> 
+<p> {{ alerts }}</p> -->
+{% for a in alerts %}
+<p> {{ a.timestamp}} {{ a.sendto }} {{  a.message }} </p>
+{% endfor %}
 </html>
