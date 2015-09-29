@@ -4,6 +4,7 @@
 import urllib2
 import json
 import datetime
+import time
 class Template:
 	def __init__(self,templateid,name):
 		self.templateid = templateid
@@ -43,24 +44,28 @@ class ZabbixApi:
 		request = urllib2.Request(self.zabbix_url,json.dumps(data))
 		request.add_header('Content-Type','application/json')
 		response = urllib2.urlopen(request)
-		return json.loads(response.read())	
 		self.id += 1
+		return json.loads(response.read())	
 	
 	def auth(self):
 		auth_data={ 'jsonrpc':'2.0','method':'user.login','params':{'user':self.api_user,'password':self.api_pass},'id':0}
 		ret = self.senddata(auth_data)
 		self.auth =  ret['result']
+	#	print auth_data
+	#	print ret
 		# for debug
 		#print self.auth
-	def getalerts(self):
+	def getalerts(self,timestamp):
+# for debug
 #1443312000	
+#		timestamp = '1443312000'
 		data = {
 		    "jsonrpc": "2.0",
 		    "method": "alert.get",
 		    "params": {
 		        "output": "extend",
 				"mediatypeids": "5",
-				"time_from":"1443312000",
+				"time_from":timestamp,
 		    },
 		    "auth": self.auth,
 		    "id": self.id
@@ -70,8 +75,10 @@ class ZabbixApi:
 ### {u'eventid': u'1182709', u'mediatypeid': u'5', u'alerttype': u'0', u'alertid': u'112671', u'clock': u'1443417182', u'error': u'', u'userid': u'42', u'retries': u'0', u'status': u'1', u'actionid': u'25', u'sendto': u'15921891876', u'message': u'Trigger: searchcenter 8480\nTrigger status: PROBLEM\n\nItem values:\n\n1. searchcenter  8480 (xml-app05:net.tcp.listen[8480]): 1', u'esc_step': u'1', u'subject': u'\u3010\u9a7b\u4e91\u76d1\u63a7\u4e2d\u5fc3\u3011PROBLEM: searchcenter 8480:xml-app05'}
 ###
 #datetime.fromtimestamp(timestamp)
+#		print data
+#		print ret
 		for p in ret['result']:
-			print datetime.datetime.fromtimestamp(float(p['clock'])),p['sendto'],p['subject']
+			print p['clock'],datetime.datetime.fromtimestamp(float(p['clock'])),p['sendto'],p['subject']
 
 	# for debug
 #		print ret
@@ -203,4 +210,11 @@ if __name__ == '__main__':
 #	test.printproxy()
 #	test.getgroup()
 #	test.gettemplates()
-	test.getalerts()
+	t = datetime.date.today()
+	timestamp = time.mktime(t.timetuple())	
+# for debug
+#	print int(timestamp)
+	test.getalerts(int(timestamp))
+
+
+
