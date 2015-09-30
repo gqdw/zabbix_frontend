@@ -32,6 +32,9 @@ class Alerts:
 		self.timestamp =  timestamp
 		self.sendto = sendto
 		self.message = message
+		import pytz
+		tz  = pytz.timezone('Asia/Shanghai')
+#		tz_utc_8 = datetime.timezone(datetime.timedelta(hours=8))
 		self.sztime = datetime.datetime.fromtimestamp(float(timestamp))
 	def __unicode__(self):
 		return self.message
