@@ -32,6 +32,7 @@ class Alerts:
 		self.timestamp =  timestamp
 		self.sendto = sendto
 		self.message = message
+		self.sztime = datetime.datetime.fromtimestamp(float(timestamp))
 	def __unicode__(self):
 		return self.message
 
