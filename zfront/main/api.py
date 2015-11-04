@@ -68,6 +68,10 @@ class ZabbixApi:
 		# for debug
 		#print self.auth
 	def getalerts(self,timestamp):
+		'''
+			argv $1  timestamp
+			get alerts from timestamp
+		'''
 # for debug
 #1443312000	
 #		timestamp = '1443312000'
