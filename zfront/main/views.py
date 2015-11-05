@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django import forms
 from api import ZabbixApi
+import datetime
+import time
 
 # Create your views here.
 def getpass():
@@ -59,7 +61,10 @@ def alerts(request):
 	(api_user,api_pass) = getpass()
 	Z = ZabbixApi(api_user,api_pass)
 	Z.auth()
-	Z.getalerts(1443312000)
+	d1=datetime.date.today()
+	t1=time.mktime(d1.timetuple())
+	#Z.getalerts(1443312000)
+	Z.getalerts(t1)
 	return render(request,'alerts.html',{'alerts':Z.alerts})
 
 
