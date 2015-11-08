@@ -65,7 +65,8 @@ def alerts(request):
 	t1=time.mktime(d1.timetuple())
 	#Z.getalerts(1443312000)
 	Z.getalerts(t1)
-	return render(request,'alerts.html',{'alerts':Z.alerts})
+	#print len(Z.alerts)
+	return render(request,'alerts.html',{'alerts':Z.alerts,'lens':len(Z.alerts)})
 
 
 
