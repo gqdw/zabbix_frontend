@@ -66,7 +66,7 @@ def alerts(request):
 	#Z.getalerts(1443312000)
 	Z.getalerts(t1)
 	#print len(Z.alerts)
-	return render(request,'alerts.html',{'alerts':Z.alerts,'lens':len(Z.alerts)})
+	return render(request,'alerts.html',{'alerts':Z.alerts})
 
 
 
