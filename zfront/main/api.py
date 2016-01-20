@@ -42,8 +42,8 @@ class Alerts:
 
 class ZabbixApi:
 	def __init__(self,api_user,api_pass):
-		self.zabbix_url = "http://121.199.41.203/api_jsonrpc.php"
-		#self.zabbix_url = "http://zabbix.jiagouyun.com/api_jsonrpc.php"
+#		self.zabbix_url = "http://121.199.41.203/api_jsonrpc.php"
+		self.zabbix_url = "http://zabbix.zhai.me/api_jsonrpc.php"
 		self.api_user = api_user
 		self.api_pass = api_pass
 		self.id = 0

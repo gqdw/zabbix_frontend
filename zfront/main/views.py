@@ -48,8 +48,8 @@ def index( request ):
 			if ret.has_key('error'):
 				isok = 0
 			else:
-				isfalse = 1
-			return  render(request,'index.html',{'form':form,'isok':isok,'isfalse':isfalse})
+				isok = 1
+			return  render(request,'index.html',{'form':form,'isok':isok})
 				#return  render(request,'ok.html',{})
 			#return HttpResponse(ret['result'])
 	else:
